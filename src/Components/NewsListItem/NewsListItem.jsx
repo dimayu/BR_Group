@@ -16,6 +16,7 @@ export const NewsListItem = ({
       return num
     }
   }
+  
   const year = new Date(time).getFullYear();
   const month = new Date(time).getMonth();
   const day = addZero(new Date(time).getDate());

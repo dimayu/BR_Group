@@ -7,7 +7,7 @@ export const NewsList = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(20);
+  const [postsPerPage] = useState(15);
   const baseUrl = "https://hacker-news.firebaseio.com/v0/newstories.json";
   const newsItemUrl = "https://hacker-news.firebaseio.com/v0/item/";
   

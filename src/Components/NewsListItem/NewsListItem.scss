@@ -1,4 +1,5 @@
 @import "../../baseStyles/variables";
+@import "../../baseStyles/smart-grid";
 
 .news__item {
   display: flex;
@@ -26,6 +27,26 @@
     &--title {
       margin-right: $offset-x;
       font-size: 22px;
+    }
+
+    &--value {
+      color: $color-green;
+    }
+  }
+
+  @include md-block() {
+    padding: $offset-xs;
+
+    &__title {
+      font-size: 18px;
+    }
+
+    &__sub {
+      margin-right: $offset-x;
+
+      &--title {
+        font-size: 18px;
+      }
     }
   }
 }

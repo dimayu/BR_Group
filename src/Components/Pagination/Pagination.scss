@@ -1,4 +1,5 @@
 @import "../../baseStyles/variables";
+@import "../../baseStyles/smart-grid";
 
 .pagination {
   display: flex;
@@ -18,6 +19,15 @@
 
         &:before {
           transform: translateX(0);
+        }
+      }
+
+      @include md-block() {
+        &.btn {
+          width: 25px;
+          height: 25px;
+          margin: 0 2px;
+          padding: 4px;
         }
       }
     }
