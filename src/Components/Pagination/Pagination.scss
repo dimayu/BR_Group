@@ -1,0 +1,25 @@
+@import "../../baseStyles/variables";
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: $offset-x;
+
+  &__item {
+
+    &__link {
+      min-width: fit-content;
+      height: auto;
+      margin: 0 4px;
+      padding: 8px;
+
+      &--active.btn {
+        color: $color-green-1;
+
+        &:before {
+          transform: translateX(0);
+        }
+      }
+    }
+  }
+}

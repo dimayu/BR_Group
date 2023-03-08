@@ -1,0 +1,6 @@
+@import "../../baseStyles/base";
+@import "../../baseStyles/smart-grid";
+
+.wrapper {
+  @include wrapper();
+}

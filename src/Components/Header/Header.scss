@@ -1,0 +1,17 @@
+@import "../../baseStyles/variables";
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: $offset-m;
+  background-color: $color-green-1;
+
+  &__logo {
+    font-size: 24px;
+    color: $color-black;
+
+    &:hover {
+      color: $color-green;
+    }
+  }
+}
