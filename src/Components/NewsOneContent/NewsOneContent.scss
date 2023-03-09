@@ -1,0 +1,11 @@
+@import "../../baseStyles/variables";
+
+.news-one__content {
+  margin: $offset-m 0;
+}
+
+a.news__item__sub--value {
+  &:hover {
+    text-decoration: underline;
+  }
+}

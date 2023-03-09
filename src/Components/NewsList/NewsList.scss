@@ -2,4 +2,8 @@
 
 .news {
   margin: $offset-l 0;
+
+  .btn {
+    margin-bottom: $offset-m;
+  }
 }

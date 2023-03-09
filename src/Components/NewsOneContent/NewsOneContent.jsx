@@ -1,14 +1,13 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-import './NewsListItem.scss';
+import './NewsOneContent.scss';
 
-export const NewsListItem = ({
-  id,
-  title,
-  score,
-  by,
-  time
-}) => {
+export const NewsOneContent = ({data}) => {
+  const {title, by, url, time, kids} = data;
+  const [comments, setComments] = useState({});
+  const [loading, setLoading] = useState(true);
+  
+  const newsItemUrl = "https://hacker-news.firebaseio.com/v0/item/";
   
   function addZero(num) {
     if (num < 10) {
@@ -27,12 +26,39 @@ export const NewsListItem = ({
   const date = `${day} / ${month + 1} / ${year}`;
   const dateTime = `${hours}: ${minutes} : ${seconds}`;
   
+  useEffect(() => {
+    const fetchData = (url) => {
+      return new Promise((resolve, reject) => {
+        fetch(url)
+        .then((res) => res.json())
+        .then((data) => resolve(data))
+        .catch((err) => reject(err));
+      });
+    };
+    
+    if (kids) {
+      const getData = async () => {
+        const commentsArr = [];
+        setLoading(true);
+        await kids.map(async (id) => {
+          const newsData = await fetchData(`${newsItemUrl}${id}.json?print=pretty`);
+          commentsArr.push(newsData);
+          if (commentsArr) {
+            setComments(commentsArr);
+            setLoading(false);
+          }
+        });
+      };
+      getData();
+    }
+  }, [kids]);
+  
   return (
-    <Link to={`/news-one/${id}`} className="news__item">
+    <div className="news-one__content">
       <div className="news__item__title">{title}</div>
       <div className="news__item__score news__item__sub">
-        <span className="news__item__sub--title">Rating:</span>
-        <span className="news__item__sub--value">{score}</span>
+        <span className="news__item__sub--title">Link:</span>
+        <a href={url} className="news__item__sub--value">{url}</a>
       </div>
       <div className="news__item__name news__item__sub">
         <span className="news__item__sub--title">Nickname:</span>
@@ -45,6 +71,6 @@ export const NewsListItem = ({
         <span className="news__item__sub--title">Time:</span>
         <span className="news__item__sub--value">{dateTime}</span>
       </div>
-    </Link>
+    </div>
   );
-}
+};

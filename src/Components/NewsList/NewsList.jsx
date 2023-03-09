@@ -6,9 +6,10 @@ import './NewsList.scss';
 export const NewsList = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(15);
-  const baseUrl = "https://hacker-news.firebaseio.com/v0/newstories.json";
+  const baseUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
   const newsItemUrl = "https://hacker-news.firebaseio.com/v0/item/";
   
   useEffect(() => {
@@ -37,30 +38,36 @@ export const NewsList = () => {
     // setInterval(() => {
     //   getData()
     // }, 60000);
-  }, []);
+  }, [reload]);
+  
+  const onReload = () => setReload(!reload);
   
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentNews = news.slice(indexOfFirstPost, indexOfLastPost);
   const paginate = pageNumber => setCurrentPage(pageNumber);
-  console.log(currentNews);
   
   return (
-    <div className="news">
-      <div className="wrapper">
-        {loading
-          ? <Loader/>
-          : currentNews.map ? currentNews.map(item => (
-            <NewsListItem key={item.id} {...item}/>
-          )) : <h4 className="not-found">Nothing found</h4>
-        }
-        <Pagination
-          postsPerPage={postsPerPage}
-          totalPosts={news.length}
-          paginate={paginate}
-          currentPage={currentPage}
-        />
+    <main>
+      <div className="news">
+        <div className="wrapper">
+          <button  className="btn" onClick={onReload}>
+            Reload
+          </button>
+          {loading
+            ? <Loader/>
+            : currentNews.map ? currentNews.map(item => (
+              <NewsListItem key={item.id} {...item}/>
+            )) : <h4 className="not-found">Nothing found</h4>
+          }
+          <Pagination
+            postsPerPage={postsPerPage}
+            totalPosts={news.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

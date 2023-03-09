@@ -1,0 +1,52 @@
+@import "../../baseStyles/variables";
+@import "../../baseStyles/smart-grid";
+
+.news__item {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border-bottom: 1px solid $color-black;
+  padding: $offset-m;
+  color: $color-black;
+
+  &:hover {
+    background-color: $color-green-1;
+  }
+
+  &__title {
+    width: 100%;
+    padding-bottom: $offset-x;
+    font-size: 24px;
+    font-weight: 700;
+    color: $color-green;
+  }
+
+  &__sub {
+    margin-right: $offset-m;
+
+    &--title {
+      margin-right: $offset-x;
+      font-size: 22px;
+    }
+
+    &--value {
+      color: $color-green;
+    }
+  }
+
+  @include md-block() {
+    padding: $offset-xs;
+
+    &__title {
+      font-size: 18px;
+    }
+
+    &__sub {
+      margin-right: $offset-x;
+
+      &--title {
+        font-size: 18px;
+      }
+    }
+  }
+}
