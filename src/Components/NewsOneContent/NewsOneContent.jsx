@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 
+import { getKids } from '../../Api/ApiFetch';
+import { formatDate } from '../../Helpers/FormatDate'
+
 import './NewsOneContent.scss';
 
 export const NewsOneContent = ({data}) => {
@@ -7,49 +10,18 @@ export const NewsOneContent = ({data}) => {
   const [comments, setComments] = useState({});
   const [loading, setLoading] = useState(true);
   
-  const newsItemUrl = "https://hacker-news.firebaseio.com/v0/item/";
-  
-  function addZero(num) {
-    if (num < 10) {
-      return ('0' + num).slice(-2);
-    } else {
-      return num
-    }
-  }
-  
-  const year = new Date(time).getFullYear();
-  const month = new Date(time).getMonth();
-  const day = addZero(new Date(time).getDate());
-  const minutes = addZero(new Date(time).getMinutes());
-  const seconds = addZero(new Date(time).getSeconds());
-  const hours = addZero(new Date(time).getHours());
-  const date = `${day} / ${month + 1} / ${year}`;
-  const dateTime = `${hours}: ${minutes} : ${seconds}`;
+  const date = formatDate(time);
   
   useEffect(() => {
-    const fetchData = (url) => {
-      return new Promise((resolve, reject) => {
-        fetch(url)
-        .then((res) => res.json())
-        .then((data) => resolve(data))
-        .catch((err) => reject(err));
-      });
-    };
-    
     if (kids) {
-      const getData = async () => {
-        const commentsArr = [];
-        setLoading(true);
-        await kids.map(async (id) => {
-          const newsData = await fetchData(`${newsItemUrl}${id}.json?print=pretty`);
-          commentsArr.push(newsData);
-          if (commentsArr) {
-            setComments(commentsArr);
-            setLoading(false);
-          }
-        });
-      };
-      getData();
+      getKids(kids)
+      .then(data => {
+        if (data) {
+          setComments(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => console.log(err));
     }
   }, [kids]);
   
@@ -67,9 +39,6 @@ export const NewsOneContent = ({data}) => {
       <div className="news__item__time news__item__sub">
         <span className="news__item__sub--title">Date:</span>
         <span className="news__item__sub--value">{date}</span>
-        <span> </span>
-        <span className="news__item__sub--title">Time:</span>
-        <span className="news__item__sub--value">{dateTime}</span>
       </div>
     </div>
   );

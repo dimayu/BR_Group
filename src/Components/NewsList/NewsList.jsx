@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { fetchTopPosts } from '../../Api/ApiFetch'
 import { NewsListItem, Loader, Pagination } from '../index';
 
 import './NewsList.scss';
@@ -9,35 +10,23 @@ export const NewsList = () => {
   const [reload, setReload] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(15);
-  const baseUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
-  const newsItemUrl = "https://hacker-news.firebaseio.com/v0/item/";
   
   useEffect(() => {
-    const fetchData = (url) => {
-      return new Promise((resolve, reject) => {
-        fetch(url)
-        .then((res) => res.json())
-        .then((data) => resolve(data))
-        .catch((err) => reject(err));
-      });
-    };
-    const newsList = [];
-    const getData = async () => {
-      setLoading(true);
-      const data = await fetchData(baseUrl);
-      await data.map(async (id) => {
-        const newsData = await fetchData(`${newsItemUrl}${id}.json`);
-        newsList.push(newsData);
-        if (newsList.length > 99) {
-          setNews(newsList.slice(0, 99).sort((a, b) => a.time > b.time ? -1 : 1));
+    const newsArr = () => {
+      fetchTopPosts()
+      .then(data => {
+        if (data) {
+          setNews(data);
           setLoading(false);
         }
-      });
+      })
+      .catch((err) => console.log(err));
     };
-    getData();
-    // setInterval(() => {
-    //   getData()
-    // }, 60000);
+    newsArr();
+    
+    setInterval(() => {
+      newsArr();
+    }, 30000);
   }, [reload]);
   
   const onReload = () => setReload(!reload);

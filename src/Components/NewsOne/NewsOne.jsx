@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from "react-router";
 
+import { fetchPost } from '../../Api/ApiFetch';
 import { Loader, NewsOneContent } from '../index';
 
 import './NewsOne.scss';
@@ -8,27 +9,18 @@ import './NewsOne.scss';
 export const NewsOne = () => {
   const [newsOne, setNewsOne] = useState({});
   const [loading, setLoading] = useState(true);
-  const newsItemUrl = "https://hacker-news.firebaseio.com/v0/item/";
   const param = useParams();
   const id = param.id;
   
   useEffect(() => {
-    fetch(`${newsItemUrl}${id}.json`)
-    .then(response => {
-      if (response?.ok) {
-        return response.json();
-      }
-    })
+    fetchPost(id)
     .then(data => {
       if (data) {
         setNewsOne(data);
         setLoading(false);
       }
     })
-    .catch((err) => {
-      console.log(err);
-      setLoading(false);
-    });
+    .catch((err) => console.log(err));
   }, [id]);
   
   return (
