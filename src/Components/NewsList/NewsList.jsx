@@ -33,7 +33,7 @@ export const NewsList = () => {
   
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentNews = news.slice(indexOfFirstPost, indexOfLastPost);
+  const currentNews = news.sort((a, b) => a.time > b.time ? -1 : 1).slice(indexOfFirstPost, indexOfLastPost);
   const paginate = pageNumber => setCurrentPage(pageNumber);
   
   return (

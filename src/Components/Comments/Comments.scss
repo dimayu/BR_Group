@@ -1,0 +1,27 @@
+@import "../../baseStyles/variables";
+
+.comment {
+  margin: $offset-m $offset-x;
+  cursor: pointer;
+
+  &__item {
+    margin-bottom: $offset-xs;
+
+    &__title {
+      margin-right: $offset-xs;
+      font-size: 16px;
+    }
+
+    &__value {
+      color: $color-green;
+    }
+
+    &__content {
+      font-size: 16px;
+    }
+  }
+
+  &-child {
+    margin: $offset-x;
+  }
+}

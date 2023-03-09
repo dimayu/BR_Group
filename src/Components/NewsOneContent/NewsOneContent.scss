@@ -2,6 +2,10 @@
 
 .news-one__content {
   margin: $offset-m 0;
+
+  .btn {
+    margin-bottom: $offset-m;
+  }
 }
 
 a.news__item__sub--value {

@@ -21,7 +21,7 @@ export const fetchTopPosts = () => {
     if(!ids) {
       throw new Error('Error fetching posts')
     }
-    return ids.slice(0, 99)
+    return ids.slice(0, 99);
   })
   .then((ids) => {
     return Promise.all(ids.map(fetchPost))
