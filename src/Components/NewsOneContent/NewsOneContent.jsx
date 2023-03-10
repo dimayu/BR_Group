@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { getKids } from '../../Api/ApiFetch';
@@ -11,10 +11,21 @@ export const NewsOneContent = ({data}) => {
   const {title, by, url, time, kids} = data;
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(true);
   
   const navigate = useNavigate();
   
   const date = formatDate(time);
+  
+  const commentsLength = useMemo(() => {
+    return comments
+      ? comments.reduce((acc, el) => {
+        return (acc + 1 + (el?.kids?.length || 0))
+      }, 0)
+      : 0;
+  }, [comments]);
+  
+  const onReload = () => setReload(!reload);
   
   useEffect(() => {
     if (kids) {
@@ -27,11 +38,14 @@ export const NewsOneContent = ({data}) => {
       })
       .catch((err) => console.log(err));
     }
-  }, [kids]);
+  }, [kids, reload]);
   
   return (
     <div className="news-one__content">
-      <button className="btn" onClick={() => navigate(-1)}>Back</button>
+      <div className="btns">
+        <button className="btn" onClick={() => navigate(-1)}>Back</button>
+        <button className="btn" onClick={onReload}>Reload comments</button>
+      </div>
       <div className="news__item__title">{title}</div>
       <div className="news__item__score news__item__sub">
         <span className="news__item__sub--title">Link:</span>
@@ -47,12 +61,12 @@ export const NewsOneContent = ({data}) => {
       </div>
       <div className="news__item__time news__item__sub">
         <span className="news__item__sub--title">Comments:</span>
-        <span className="news__item__sub--value">{comments ? comments.length : 0}</span>
+        <span className="news__item__sub--value">{commentsLength}</span>
       </div>
       {loading && kids
         ? <Loader/>
         :comments && !loading ? comments.map(item => (
-                    <Comments {...item} key={item.id}/>
+                    <Comments data={item} key={item.id}/>
                   ))
                 : <p>No comments</p>
       }

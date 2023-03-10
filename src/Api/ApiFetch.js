@@ -14,7 +14,7 @@ export const fetchPost = (id) => {
   })
 };
 
-export const fetchTopPosts = () => {
+export const fetchTopPosts = (func) => {
   return fetch(`${baseUrl}`)
   .then((res) => res.json())
   .then((ids) => {
@@ -26,7 +26,7 @@ export const fetchTopPosts = () => {
   .then((ids) => {
     return Promise.all(ids.map(fetchPost))
     .then(news => {
-      return news
+      func(news)
     })
   })
 };

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { fetchTopPosts } from '../../Api/ApiFetch'
+import { useEffect, useRef, useState, } from 'react';
+
+import { fetchTopPosts } from '../../Api/ApiFetch';
 import { NewsListItem, Loader, Pagination } from '../index';
 
 import './NewsList.scss';
@@ -10,24 +11,27 @@ export const NewsList = () => {
   const [reload, setReload] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(15);
+  const miniStore = useRef({intervalId: null});
   
   useEffect(() => {
-    const newsArr = () => {
-      fetchTopPosts()
-      .then(data => {
-        if (data) {
-          setNews(data);
-          setLoading(false);
-        }
+    fetchTopPosts((data) => {
+      setNews(data);
+      setLoading(false);
+    })
+    .catch((err) => console.log(err));
+  }, [reload]);
+  
+  useEffect(() => {
+    miniStore.current.intervalId = setInterval(() => {
+      fetchTopPosts((data) => {
+        setNews(data);
+        setLoading(false);
       })
       .catch((err) => console.log(err));
-    };
-    newsArr();
+    }, 60000);
     
-    setInterval(() => {
-      newsArr();
-    }, 30000);
-  }, [reload]);
+    return () => clearInterval(miniStore.current.intervalId);
+  }, []);
   
   const onReload = () => setReload(!reload);
   
@@ -40,7 +44,7 @@ export const NewsList = () => {
     <main>
       <div className="news">
         <div className="wrapper">
-          <button  className="btn" onClick={onReload}>
+          <button className="btn" onClick={onReload}>
             Reload
           </button>
           {loading
@@ -59,4 +63,4 @@ export const NewsList = () => {
       </div>
     </main>
   );
-}
+};

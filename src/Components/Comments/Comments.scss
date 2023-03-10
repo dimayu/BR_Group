@@ -2,7 +2,6 @@
 
 .comment {
   margin: $offset-m $offset-x;
-  cursor: pointer;
 
   &__item {
     margin-bottom: $offset-xs;
@@ -22,6 +21,15 @@
   }
 
   &-child {
-    margin: $offset-x;
+    margin: $offset-x $offset-l;
+  }
+
+  &__more {
+    color: $color-green;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
